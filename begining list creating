@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    // Constructor to initialize a node
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+int main() {
+    int arr[] = {2, 4, 6, 8, 10};  // Define the array outside the Node class
+
+    // Initialize the head pointer to nullptr
+    Node* Head = nullptr;
+
+    // Insert nodes at the beginning
+    for (int i = 0; i < 5; i++) {
+        // Create a new node with data from the array
+        Node* newNode = new Node(arr[i]);
+
+        // If the linked list is empty, make the new node the head
+        if (Head == nullptr) {
+            Head = newNode;
+        } else {
+            // Otherwise, insert the new node at the beginning
+            newNode->next = Head;
+            Head = newNode;
+        }
+    }
+
+    // Print the linked list
+    Node* temp = Head;
+    while (temp != nullptr) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+
+    return 0;
+}
