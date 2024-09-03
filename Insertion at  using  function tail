@@ -1,0 +1,54 @@
+#include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int data) {
+        this->data = data;
+        this->next = nullptr;
+    }
+};
+
+void InsertAtHead(Node* &head, int d) {
+    Node* temp = new Node(d);
+    temp->next = head;
+    head = temp;
+}
+
+void InsertAtTail(Node* &head, int d) {
+    Node* new_node = new Node(d);
+    if (head == nullptr) {
+        head = new_node;
+    } else {
+        Node* current = head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = new_node;
+    }
+}
+
+int main() {
+    Node* head = nullptr;  // Initialize head to nullptr
+    int d;
+
+    // Insert nodes at the tail
+    // Example: Insert 3 nodes with data 1, 2, 3
+    for (int i = 1; i <= 3; ++i) {
+        cout << "Enter data for node " << i << ": ";
+        cin >> d;
+        InsertAtTail(head, d);
+    }
+
+    // Traverse the linked list and print data and next pointer
+    Node* current = head;
+    while (current != nullptr) {
+        cout << "Data: " << current->data << ", Next: " << current->next << endl;
+        current = current->next;
+    }
+
+    return 0;
+}
