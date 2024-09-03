@@ -1,0 +1,127 @@
+#include <iostream>
+
+using namespace std;
+
+// Define a node structure for singly linked list
+struct Node {
+    int data;
+    Node* next;
+    Node(int data) : data(data), next(nullptr) {}
+};
+
+// Circular linked list class
+class CircularLinkedList {
+private:
+    Node* head;
+
+public:
+    CircularLinkedList() : head(nullptr) {}
+
+    // Function to insert a node at the end of the circular linked list
+    void append(int data) {
+        Node* new_node = new Node(data);
+        if (!head) {
+            head = new_node;
+            head->next = head; // Point to itself
+            return;
+        }
+        Node* last = head;
+        while (last->next != head) {
+            last = last->next;
+        }
+        last->next = new_node;
+        new_node->next = head;
+    }
+
+    // Function to delete the last node (tail) of the circular linked list
+    void deleteTail() {
+        if (!head) {
+            return;
+        }
+        if (head->next == head) {
+            delete head;
+            head = nullptr;
+            return;
+        }
+        Node* second_last = head;
+        while (second_last->next->next != head) {
+            second_last = second_last->next;
+        }
+        delete second_last->next;
+        second_last->next = head;
+    }
+
+    // Function to delete a node at a specific position in the circular linked list
+    void deleteAtPosition(int position) {
+        if (!head) {
+            return;
+        }
+        Node* temp = head;
+        if (position == 0) {
+            if (head->next == head) {
+                delete head;
+                head = nullptr;
+                return;
+            }
+            Node* last = head;
+            while (last->next != head) {
+                last = last->next;
+            }
+            Node* new_head = head->next;
+            delete head;
+            head = new_head;
+            last->next = head;
+            return;
+        }
+        for (int i = 0; temp->next != head && i < position - 1; i++) {
+            temp = temp->next;
+        }
+        if (temp->next == head || temp->next->next == head) {
+            return;
+        }
+        Node* to_delete = temp->next;
+        temp->next = to_delete->next;
+        delete to_delete;
+    }
+
+    // Function to print the circular linked list
+    void printList() {
+        if (!head) {
+            cout << "List is empty" << endl;
+            return;
+        }
+        Node* temp = head;
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != head);
+        cout << endl;
+    }
+};
+
+// Main function
+int main() {
+    CircularLinkedList cll;
+
+    // Append nodes to the circular linked list
+    cll.append(1);
+    cll.append(2);
+    cll.append(3);
+    cll.append(4);
+    cll.append(5);
+
+    // Deleting the tail (last element)
+    cll.deleteTail(); // CircularLinkedList is now 1 -> 2 -> 3 -> 4
+
+    // Deleting an element at a specific position (e.g., position 2)
+    cll.deleteAtPosition(2); // CircularLinkedList is now 1 -> 2 -> 4
+
+    // Print the modified circular linked list
+    cll.printList(); // Output: 1 2 4
+    
+    // Deleting at position 0
+    cll.deleteAtPosition(0); // CircularLinkedList is now 2 -> 4
+    cll.printList(); // Output: 2 4
+
+    return 0;
+}
