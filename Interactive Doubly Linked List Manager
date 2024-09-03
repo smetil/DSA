@@ -1,0 +1,146 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* prev;
+
+    Node(int d) {
+        this->data = d;
+        this->next = nullptr;
+        this->prev = nullptr;
+    }
+};
+
+void print(Node* head) {
+    Node* temp = head;
+    while (temp) {
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+    cout << "None" << endl;
+}
+
+int getLength(Node* head) {
+    int len = 0;
+    Node* temp = head;
+    while (temp != nullptr) {
+        len++;
+        temp = temp->next;
+    }
+    return len;
+}
+
+void insertAtHead(Node* &head, int d) {
+    Node* temp = new Node(d);
+    temp->next = head;
+    if (head != nullptr) {
+        head->prev = temp;
+    }
+    head = temp;
+}
+
+void insertAtTail(Node* &head, int d) {
+    Node* temp = new Node(d);
+    if (head == nullptr) {
+        head = temp;
+    } else {
+        Node* tail = head;
+        while (tail->next != nullptr) {
+            tail = tail->next;
+        }
+        tail->next = temp;
+        temp->prev = tail;
+    }
+}
+
+void deleteAtPosition(Node* &head, int position) {
+    if (head == nullptr || position <= 0) return;
+
+    Node* temp = head;
+    int count = 1;
+
+    // Traverse to the node at position
+    while (temp != nullptr && count < position) {
+        temp = temp->next;
+        count++;
+    }
+
+    // If position is out of range
+    if (temp == nullptr) return;
+
+    // Adjust pointers
+    if (temp->prev != nullptr) {
+        temp->prev->next = temp->next;
+    }
+    if (temp->next != nullptr) {
+        temp->next->prev = temp->prev;
+    }
+
+    // Delete the node
+    delete temp;
+}
+
+int main() {
+    Node* head = nullptr;
+    int choice;
+
+    do {
+        cout << "1. Insert element at head" << endl;
+        cout << "2. Insert element at tail" << endl;
+        cout << "3. Delete element at position" << endl;
+        cout << "4. Print list" << endl;
+        cout << "5. Exit" << endl;
+        cout << endl;
+        cout << "Enter your choice: "  ;
+        cin >> choice ;
+        
+        cout << endl;
+
+        switch (choice) {
+            case 1: {
+                int data;
+                cout << "Enter data to insert at head: ";
+                cin >> data;
+                insertAtHead(head, data);
+                cout << "Inserted " << data << " at head." << endl;
+                break;
+            }
+            case 2: {
+                int data;
+                cout << "Enter data to insert at tail: ";
+                cin >> data;
+                insertAtTail(head, data);
+                cout << "Inserted " << data << " at tail." << endl;
+                break;
+            }
+            case 3: {
+                int position;
+                cout << "Enter position to delete (1-based index): ";
+                cin >> position;
+                deleteAtPosition(head, position);
+                cout << "Deleted element at position " << position << "." << endl;
+                break;
+            }
+            case 4: {
+                cout << "Current list: ";
+                print(head);
+                cout << endl;
+                
+                cout << "Length of LinkedList: " << getLength(head) << endl;
+                break;
+            }
+            case 5: {
+                cout << "Exiting program." << endl;
+                break;
+            }
+            default:
+                cout << "Invalid choice. Please enter again." << endl;
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
