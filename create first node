@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+     Node* next;
+
+    // Constructor to initialize a node
+    Node(int val) {
+        data=val;
+        next=nullptr;
+    }
+};
+
+int main() {
+    // Create a new node with data 4
+    Node* node = new Node(4);
+
+    // Print the data of the node
+    cout << "Node data: " << node->data << endl;
+    cout << "Node next: " << node->next << endl;
+
+    // Clean up the allocated memory
+    delete node;
+
+    return 0;
+}
