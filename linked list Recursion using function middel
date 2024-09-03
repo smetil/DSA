@@ -1,0 +1,97 @@
+#include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int data) {
+        this->data = data;
+        this->next = nullptr;
+    }
+};
+
+void InsertAtHead(Node* &head, int d) {
+    Node* temp = new Node(d);
+    temp->next = head;
+    head = temp;
+}
+
+void InsertAtTail(Node* &head, int d) {
+    Node* temp = new Node(d);
+    if (head == nullptr) {
+        head = temp;
+    } else {
+        Node* current = head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = temp;
+    }
+}
+
+void InsertAtMiddle(Node* &head, int d, int position) {
+    Node* temp = new Node(d);
+    
+    if (position <= 1 || head == nullptr) {
+        // Insert at head if position is 1 or less or if the list is empty
+        temp->next = head;
+        head = temp;
+        return;
+    }
+
+    Node* current = head;
+    int count = 1;
+
+    // Traverse to the node just before the position
+    while (current->next != nullptr && count < position - 1) {
+        current = current->next;
+        count++;
+    }
+
+    // Insert new node after current
+    temp->next = current->next;
+    current->next = temp;
+}
+
+void PrintList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    Node* head = nullptr;
+
+    // Insert nodes at the head
+    InsertAtHead(head, 1);
+    InsertAtHead(head, 2);
+    InsertAtHead(head, 3);
+
+    // Print the initial linked list
+    cout << "Initial Linked List: ";
+    PrintList(head);
+
+    // Insert node in the middle at position 2
+    InsertAtMiddle(head, 4, 2);
+
+    // Print the modified linked list
+    cout << "Linked List after inserting 4 at position 2: ";
+    PrintList(head);
+
+    // Insert node at position 5
+    InsertAtMiddle(head, 10, 5);
+
+    // Print the modified linked list after inserting at position 5
+    cout << "Linked List after inserting 5 at position 5: ";
+    
+     InsertAtMiddle(head, 6, 4);
+
+    PrintList(head);
+
+    return 0;
+}
