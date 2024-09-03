@@ -1,0 +1,198 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int data) : data(data), next(nullptr) {}
+};
+
+class LinkedList {
+private:
+    Node* head;
+
+public:
+    LinkedList() : head(nullptr) {}
+
+    void addBeginning(int data) {
+        Node* newNode = new Node(data);
+        newNode->next = head;
+        head = newNode;
+    }
+
+    void addLast(int data) {
+        Node* newNode = new Node(data);
+        if (!head) {
+            head = newNode;
+            return;
+        }
+        Node* last = head;
+        while (last->next) {
+            last = last->next;
+        }
+        last->next = newNode;
+    }
+
+    void addAt(int data, int position) {
+        Node* newNode = new Node(data);
+        if (position == 0) {
+            newNode->next = head;
+            head = newNode;
+            return;
+        }
+        Node* temp = head;
+        for (int i = 0; i < position - 1; ++i) {
+            temp = temp->next;
+            if (temp == nullptr) {
+                cout << "Position out of bounds" << endl;
+                return;
+            }
+        }
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
+
+    void removeBeginning() {
+        if (!head) {
+            cout << "List is empty" << endl;
+            return;
+        }
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+    void removeLast() {
+        if (!head) {
+            cout << "List is empty" << endl;
+            return;
+        }
+        if (!head->next) {
+            delete head;
+            head = nullptr;
+            return;
+        }
+        Node* secondLast = head;
+        while (secondLast->next->next) {
+            secondLast = secondLast->next;
+        }
+        delete secondLast->next;
+        secondLast->next = nullptr;
+    }
+
+    void removeAt(int position) {
+        if (!head) {
+            cout << "List is empty" << endl;
+            return;
+        }
+        if (position == 0) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+            return;
+        }
+        Node* temp = head;
+        for (int i = 0; i < position - 1; ++i) {
+            temp = temp->next;
+            if (temp == nullptr || temp->next == nullptr) {
+                cout << "Position out of bounds" << endl;
+                return;
+            }
+        }
+        Node* nodeToDelete = temp->next;
+        temp->next = temp->next->next;
+        delete nodeToDelete;
+    }
+
+    void search(int key) {
+        Node* current = head;
+        int position = 0;
+        while (current) {
+            if (current->data == key) {
+                cout << "Element " << key << " found at position " << position << endl;
+                return;
+            }
+            current = current->next;
+            position++;
+        }
+        cout << "Element " << key << " not found" << endl;
+    }
+
+    void show() {
+        Node* current = head;
+        if (!current) {
+            cout << "List is empty" << endl;
+            return;
+        }
+        while (current) {
+            cout << current->data << " -> ";
+            current = current->next;
+        }
+        cout << "None" << endl;
+    }
+};
+
+int main() {
+    LinkedList llist;
+    int choice, data, position;
+
+    while (true) {
+        cout << "\n1. Add element beginning" << endl;
+        cout << "2. Add element last" << endl;
+        cout << "3. Add element at any random location" << endl;
+        cout << "4. Remove element beginning" << endl;
+        cout << "5. Remove element last" << endl;
+        cout << "6. Remove element any location" << endl;
+        cout << "7. Search" << endl;
+        cout << "8. Show" << endl;
+        cout << "9. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter element: ";
+                cin >> data;
+                llist.addBeginning(data);
+                break;
+            case 2:
+                cout << "Enter element: ";
+                cin >> data;
+                llist.addLast(data);
+                break;
+            case 3:
+                cout << "Enter element: ";
+                cin >> data;
+                cout << "Enter position: ";
+                cin >> position;
+                llist.addAt(data, position);
+                break;
+            case 4:
+                llist.removeBeginning();
+                break;
+            case 5:
+                llist.removeLast();
+                break;
+            case 6:
+                cout << "Enter position: ";
+                cin >> position;
+                llist.removeAt(position);
+                break;
+            case 7:
+                cout << "Enter element to search: ";
+                cin >> data;
+                llist.search(data);
+                break;
+            case 8:
+                llist.show();
+                break;
+            case 9:
+                exit(0);
+            default:
+                cout << "Invalid choice" << endl;
+        }
+    }
+
+    return 0;
+} 
